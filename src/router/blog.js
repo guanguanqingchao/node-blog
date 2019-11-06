@@ -4,10 +4,13 @@ const qs = require('querystring')
 const {
     getList,
     getDetail,
-    newBlog
+    newBlog,
+    updateBlog,
+    deleteBlog
 } = require('../controller/blog')
 const {
-    SuccessModel
+    SuccessModel,
+    ErrorModel
 } = require('../model/resModel')
 
 
@@ -21,25 +24,21 @@ const handleBlogRouter = (req, res) => {
 
     path = url.split("?")[0]
     query = qs.parse(req.url.split('?')[1])
+    const {
+        id,
+        keyword,
+        author
+    } = query
 
     //获取博客列表
     if (method === "GET" && path == '/api/blog/list') {
-
-        const {
-            keyword,
-            author
-        } = query
-
         const list = getList(author, keyword)
-
         return new SuccessModel(list)
     }
 
     //获取博客详情
     if (method === "GET" && path == '/api/blog/detail') {
-        const {
-            id
-        } = query
+
         const detail = getDetail(id)
         return new SuccessModel(detail)
     }
@@ -52,16 +51,21 @@ const handleBlogRouter = (req, res) => {
 
     //删除博客
     if (method === "POST" && path == '/api/blog/del') {
-        return {
-            msg: '删除博客'
+        const delRes = deleteBlog(id)
+
+        if (delRes) {
+            return new SuccessModel(delRes)
+
+        } else {
+            return new ErrorModel('更新博客失败')
         }
+
     }
 
     //更新博客
     if (method === "POST" && path == '/api/blog/update') {
-        return {
-            msg: '更新博客'
-        }
+        const updateRes = updateBlog(id, req.body)
+        return new SuccessModel(updateRes)
     }
 }
 

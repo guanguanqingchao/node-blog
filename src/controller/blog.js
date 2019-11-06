@@ -35,10 +35,22 @@ const getDetail = (id) => {
     }
 }
 
-const newBlog = (data) => {
+const newBlog = (data = {}) => {
     console.log('..... post 提交的data .....', data)
     return {
         id: 9999
+    }
+}
+
+const updateBlog = (id, data = {}) => {
+    return {
+        id: 10000
+    }
+}
+
+const deleteBlog = (id) => {
+    return {
+        id
     }
 }
 
@@ -46,5 +58,7 @@ const newBlog = (data) => {
 module.exports = {
     getList,
     getDetail,
-    newBlog
+    newBlog,
+    updateBlog,
+    deleteBlog
 }

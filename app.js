@@ -1,3 +1,5 @@
+const qs = require('querystring')
+
 const handleBlogRouter = require('./src/router/blog')
 const handleUserRouter = require('./src/router/user')
 
@@ -43,10 +45,10 @@ const serverHandle = function (req, res) {
     //设置数据格式
     res.setHeader('Content-type', 'application-json');
 
+    res.query = qs.parse(req.url.split('?')[1])
+
 
     // 处理路由
-
-
     getPostData(req).then(data => {
             req.body = data;
 
