@@ -1,0 +1,10 @@
+.DS_Store
+.idea/
+node_modules/
+bower_components/
+npm-debug.log
+selenium-debug.log
+test/unit/coverage
+test/e2e/reports
+beta/
+*.swp
