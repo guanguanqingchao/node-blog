@@ -1,3 +1,16 @@
+const qs = require('querystring')
+
+
+const {
+    getList
+} = require('../controller/blog')
+const {
+    SuccessModel
+} = require('../model/resModel')
+
+
+
+
 const handleBlogRouter = (req, res) => {
     const {
         method,
@@ -5,11 +18,19 @@ const handleBlogRouter = (req, res) => {
     } = req;
 
     path = url.split("?")[0]
+    query = qs.parse(req.url.split('?')[0])
+
 
     if (method === "GET" && path == '/api/blog/list') {
-        return {
-            msg: '获取博客列表'
-        }
+
+        const {
+            keyword,
+            author
+        } = query
+
+        const list = getList(author, keyword)
+
+        return new SuccessModel(list)
     }
 
     if (method === "GET" && path == '/api/blog/detail') {
