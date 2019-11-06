@@ -26,7 +26,25 @@ const getList = (author, keyword) => {
 
 }
 
+const getDetail = (id) => {
+    return {
+        id,
+        author: 'guanqingchao',
+        content: 'this is blog detail',
+        creatTime: '2020-02-02'
+    }
+}
+
+const newBlog = (data) => {
+    console.log('..... post 提交的data .....', data)
+    return {
+        id: 9999
+    }
+}
+
 
 module.exports = {
-    getList
+    getList,
+    getDetail,
+    newBlog
 }
