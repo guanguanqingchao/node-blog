@@ -18,7 +18,6 @@ const getList = (author, keyword) => {
     }
 
     sql += `order by id desc;`
-    console.log(sql)
 
     //返回promise
     return exec(sql)

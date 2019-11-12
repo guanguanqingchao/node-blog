@@ -48,8 +48,25 @@ const serverHandle = function (req, res) {
 
     //设置数据格式
     res.setHeader('Content-type', 'application-json');
-
+    //解析路径
     res.query = qs.parse(req.url.split('?')[1])
+    //获取并解析cookie
+    req.cookie = {}
+    const cookieStr = req.headers.cookie || '' //k1=v1;k2=v2
+
+    cookieStr.split(';').forEach(ck => {
+        if (!ck) {
+            return
+        }
+        const arr = ck.split('=');
+        const key = arr[0].trim();
+        const val = arr[1].trim();
+        req.cookie[key] = val;
+
+    });
+
+    //解析session
+
 
 
     // 处理路由
