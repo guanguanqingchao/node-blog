@@ -64,7 +64,6 @@ const serverHandle = function (req, res) {
             if (blogResult) {
 
                 blogResult.then((data) => {
-                    console.log('**********处理blog 数据返回*****', data)
 
                     res.end(JSON.stringify(data))
                 })

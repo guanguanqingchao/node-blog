@@ -32,7 +32,6 @@ const handleBlogRouter = (req, res) => {
 
     //获取博客列表
     if (method === "GET" && path == '/api/blog/list') {
-        console.log('----匹配博客列表路由----')
         const result = getList(author, keyword)
         return result.then((list) => {
             return new SuccessModel(list)
@@ -43,33 +42,46 @@ const handleBlogRouter = (req, res) => {
     //获取博客详情
     if (method === "GET" && path == '/api/blog/detail') {
 
-        const detail = getDetail(id)
-        return new SuccessModel(detail)
+        const detailResult = getDetail(id)
+        return detailResult.then((detail) => new SuccessModel(detail))
     }
 
     //新建博客
     if (method === "POST" && path == '/api/blog/new') {
-        const createBlog = newBlog(req.body)
-        return new SuccessModel(createBlog)
+
+        req.body.author = 'yangdi' //开发登录时传真实author
+        const createResult = newBlog(req.body)
+        return createResult.then(createBlog => new SuccessModel(createBlog))
     }
 
     //删除博客
     if (method === "POST" && path == '/api/blog/del') {
-        const delRes = deleteBlog(id)
+        const author = 'yangdi' //开发登录
+        const delRes = deleteBlog(id, author)
 
-        if (delRes) {
-            return new SuccessModel(delRes)
+        return delRes.then(val => {
+            if (val) {
+                return new SuccessModel()
+            } else {
+                return new ErrorModel('删除博客失败')
+            }
 
-        } else {
-            return new ErrorModel('更新博客失败')
-        }
+        })
 
     }
 
     //更新博客
     if (method === "POST" && path == '/api/blog/update') {
         const updateRes = updateBlog(id, req.body)
-        return new SuccessModel(updateRes)
+        return updateRes.then(val => {
+            if (val) {
+                return new SuccessModel()
+            } else {
+                return ErrorModel('更新博客失败')
+
+            }
+
+        })
     }
 }
 
