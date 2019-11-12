@@ -26,7 +26,6 @@ function exec(sql) {
                 return
             }
 
-            // console.log('-----------result from mysql-----', result)
             resolve(result)
         })
 

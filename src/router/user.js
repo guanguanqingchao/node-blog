@@ -26,12 +26,16 @@ const handleUserRouter = (req, res) => {
         } = req.body
         const loginRes = login(username, password)
 
+        return loginRes.then(val => {
+            if (val.username) {
+                return new SuccessModel()
+            } else {
+                return new ErrorModel('账号密码错误')
+            }
 
-        if (loginRes) {
-            return new SuccessModel(loginRes)
-        } else {
-            return new ErrorModel('账号密码错误')
-        }
+        })
+
+
     }
 
 

@@ -56,7 +56,7 @@ const handleBlogRouter = (req, res) => {
 
     //删除博客
     if (method === "POST" && path == '/api/blog/del') {
-        const author = 'yangdi' //开发登录
+        const author = 'yangdi' //防止其他人删除除自己之外的博客
         const delRes = deleteBlog(id, author)
 
         return delRes.then(val => {

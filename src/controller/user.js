@@ -1,9 +1,17 @@
-const login = (username, password) => {
-    if (username === 'guanqingchao' && password === 123) {
-        return true
-    }
+const {
+    exec
+} = require('../db/mysql')
 
-    return false
+
+const login = (username, password) => {
+
+    const sql = `select username,realname from myblog.users where username='${username}' and password='${password}'`
+
+    return exec(sql).then(row => {
+
+        // [ RowDataPacket { username: 'guanqingchao', realname: 'alice' } ]
+        return row[0] || {}
+    })
 }
 
 module.exports = {

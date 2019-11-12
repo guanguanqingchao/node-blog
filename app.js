@@ -64,7 +64,6 @@ const serverHandle = function (req, res) {
             if (blogResult) {
 
                 blogResult.then((data) => {
-
                     res.end(JSON.stringify(data))
                 })
 
@@ -73,10 +72,11 @@ const serverHandle = function (req, res) {
             }
 
             if (userResult) {
+
                 userResult.then((data) => {
                     res.end(JSON.stringify(data))
-
                 })
+
                 return
             }
 
@@ -97,4 +97,3 @@ const serverHandle = function (req, res) {
 }
 
 module.exports = serverHandle
-//process.env.NODE_ENV
