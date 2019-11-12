@@ -2,27 +2,31 @@ const mysql = require('mysql');
 
 const {
     MYSQL_CONF
-} = require('../db/mysql')
+} = require('../../conf/db')
+
 
 //创建链接对象
 const con = mysql.createConnection(MYSQL_CONF)
+
+
 
 //开始连接
 con.connect()
 
 
-function exec() {
+function exec(sql) {
+
 
 
     return new Promise((resolve, reject) => {
 
-        con.query(mysql, (err, result) => {
+        con.query(sql, (err, result) => {
             if (err) {
                 reject(err)
                 return
             }
 
-            console.log(result)
+            // console.log('-----------result from mysql-----', result)
             resolve(result)
         })
 

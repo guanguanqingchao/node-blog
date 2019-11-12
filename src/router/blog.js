@@ -32,8 +32,12 @@ const handleBlogRouter = (req, res) => {
 
     //获取博客列表
     if (method === "GET" && path == '/api/blog/list') {
-        const list = getList(author, keyword)
-        return new SuccessModel(list)
+        console.log('----匹配博客列表路由----')
+        const result = getList(author, keyword)
+        return result.then((list) => {
+            return new SuccessModel(list)
+        })
+
     }
 
     //获取博客详情

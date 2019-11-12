@@ -1,28 +1,28 @@
+const {
+    exec
+} = require('../db/mysql')
+
+
 const getList = (author, keyword) => {
+    console.log('^^^^^^^^^^^^^^')
+    //where 1=1,防止author、keyword为空报错
 
-    return [{
-            id: 1,
-            creatTime: '2019-11-05',
-            author: 'guanqingchao',
-            content: '通过 new 关键词创建的对象会自动调用 constructor() 方法，因此我们可以在 constructor() 里初始化对象。'
+    //select * from myblog.blogs where author = 'guanqingchao5' order by id desc;
+    let sql = `select * from myblog.blogs where `
 
-        },
-        {
-            id: 2,
-            creatTime: '2019-11-05',
-            author: 'guanqingchao',
-            content: '通过 new 关键词创建的对象会自动调用 constructor() 方法，因此我们可以在 constructor() 里初始化对象。'
+    if (author) {
+        sql += `author='${author}'`
 
-        },
-        {
-            id: 3,
-            creatTime: '2019-11-05',
-            author: 'guanqingchao',
-            content: '通过 new 关键词创建的对象会自动调用 constructor() 方法，因此我们可以在 constructor() 里初始化对象。'
+    }
+    if (keyword) {
+        sql += `title like '%${keyword}$'`
+    }
 
-        }
-    ]
+    sql += ` order by id desc;`
+    console.log(sql)
 
+    //返回promise
+    return exec(sql)
 
 }
 

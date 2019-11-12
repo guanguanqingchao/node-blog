@@ -56,19 +56,28 @@ const serverHandle = function (req, res) {
     getPostData(req).then(data => {
             req.body = data;
 
-            const blogData = handleBlogRouter(req, res)
-            const userData = handleUserRouter(req, res)
+
+            const blogResult = handleBlogRouter(req, res)
+            const userResult = handleUserRouter(req, res)
 
 
+            if (blogResult) {
 
-            if (blogData) {
-                res.end(JSON.stringify(blogData))
+                blogResult.then((data) => {
+                    console.log('**********处理blog 数据返回*****', data)
+
+                    res.end(JSON.stringify(data))
+                })
+
                 return
+
             }
 
-            if (userData) {
-                res.end(JSON.stringify(userData))
+            if (userResult) {
+                userResult.then((data) => {
+                    res.end(JSON.stringify(data))
 
+                })
                 return
             }
 
