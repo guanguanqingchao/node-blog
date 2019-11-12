@@ -41,8 +41,10 @@ const handleUserRouter = (req, res) => {
         return loginRes.then(val => {
             if (val.username) {
 
-                //操作cookie
-                res.setHeader('Set-Cookie', `username=${val.username};path = /;httpOnly;expires=${getCookieExpire()}`) //不允许浏览器更改cookie
+                //将用户信息存贮到session中
+                req.session.username = val.username;
+                req.session.realname = val.realname;
+
                 return new SuccessModel()
             } else {
                 return new ErrorModel('账号密码错误')
@@ -52,26 +54,21 @@ const handleUserRouter = (req, res) => {
 
     //登录验证
     if (method === "GET" && path == '/api/user/login-test') {
-        // const {
-        //     username,
-        //     password
-        // } = req.body
-        const {
-            username,
-            password
-        } = query
 
-        const loginRes = login(username, password)
-        return loginRes.then(val => {
-            if (val.username) {
 
-                //操作cookie
-                res.setHeader('Set-Cookie', `username=${val.username};path = /;httpOnly;expires=${getCookieExpire()}`) //不允许浏览器更改cookie
-                return new SuccessModel()
-            } else {
-                return new ErrorModel('账号密码错误')
-            }
-        })
+        if (req.session.username) {
+            return Promise.resolve(
+                new SuccessModel({
+                    session: req.session || 'session'
+                })
+            )
+        }
+
+        return Promise.resolve(
+            new ErrorModel('尚未登录')
+        )
+
+
     }
 
 
