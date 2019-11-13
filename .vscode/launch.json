@@ -10,7 +10,7 @@
             "type": "node",
             "request": "launch",
             "name": "启动程序",
-            "program": "${workspaceFolder}/app.js"
+            "program": "${workspaceFolder}/bin/www.js",
         }
     ]
 }

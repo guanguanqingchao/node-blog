@@ -1,4 +1,4 @@
-const env = process.env.NODE_ENV
+const env = process.env.NODE_ENV || 'dev'
 
 let MYSQL_CONF;
 let REDIS_CONF;

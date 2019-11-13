@@ -30,7 +30,6 @@ const getDetail = (id) => {
 }
 
 const newBlog = (data = {}) => {
-    console.log('..... post 提交的data .....', data)
 
     const {
         title,

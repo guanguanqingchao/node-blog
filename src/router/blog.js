@@ -1,6 +1,4 @@
 const qs = require('querystring')
-
-
 const {
     getList,
     getDetail,
@@ -12,6 +10,17 @@ const {
     SuccessModel,
     ErrorModel
 } = require('../model/resModel')
+
+//登录验证
+function logCheck(req) {
+
+    if (!req.session.username) {
+        return Promise.resolve(
+            new ErrorModel('尚未登录')
+        )
+    }
+
+}
 
 
 
@@ -50,15 +59,27 @@ const handleBlogRouter = (req, res) => {
 
     //新建博客
     if (method === "POST" && path == '/api/blog/new') {
+        let logCheckRes = logCheck(req)
+        if (logCheckRes) {
+            //未登录
+            return logCheckRes
+        }
 
-        req.body.author = 'yangdi' //开发登录时传真实author
+
+        req.body.author = req.session.username
         const createResult = newBlog(req.body)
         return createResult.then(createBlog => new SuccessModel(createBlog))
     }
 
     //删除博客
     if (method === "POST" && path == '/api/blog/del') {
-        const author = 'yangdi' //防止其他人删除除自己之外的博客
+        let logCheckRes = logCheck(req)
+        if (logCheckRes) {
+            //未登录
+            return logCheckRes
+        }
+
+        const author = req.session.username //防止其他人删除除自己之外的博客
         const delRes = deleteBlog(id, author)
 
         return delRes.then(val => {
@@ -74,6 +95,12 @@ const handleBlogRouter = (req, res) => {
 
     //更新博客
     if (method === "POST" && path == '/api/blog/update') {
+        let logCheckRes = logCheck(req)
+        if (logCheckRes) {
+            //未登录
+            return logCheckRes
+        }
+
         const updateRes = updateBlog(id, req.body)
         return updateRes.then(val => {
             if (val) {

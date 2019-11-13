@@ -6,6 +6,10 @@ const path = require('path');
 
 const handleBlogRouter = require('./src/router/blog')
 const handleUserRouter = require('./src/router/user')
+const {
+    get,
+    set
+} = require('./src/db/redis')
 
 function getCookieExpire() {
     const d = new Date();
@@ -51,8 +55,7 @@ const getPostData = (req) => {
 
 
 
-//设置session
-const SESSION_DATA = {}
+
 
 const serverHandle = function (req, res) {
 
@@ -75,24 +78,52 @@ const serverHandle = function (req, res) {
 
     });
 
+    //设置session
+    // const SESSION_DATA = {}
+    // //解析session
+    // let userId = req.cookie.userid
+    // let needSetCookie = false
 
-    //解析session
+    // if (userId) {
+    //     if (!SESSION_DATA[userId]) {
+    //         SESSION_DATA[userId] = {}
+    //     }
+
+    // } else {
+    //     needSetCookie = true
+    //     userId = `${Date.now()}_${Math.random()}`
+    //     SESSION_DATA[userId] = {}
+    // }
+
+    // req.session = SESSION_DATA[userId]
+
+
+
+
+    // 解析session&session的存取
     let userId = req.cookie.userid
     let needSetCookie = false
-
     if (userId) {
-        if (!SESSION_DATA[userId]) {
-            SESSION_DATA[userId] = {}
-        }
-
+        // 对应非第一次访问情况
+        get(userId).then(data => {
+            if (data) {
+                // 对应浏览器中登录信息正常情况
+                req.session = data
+            } else {
+                // 对应浏览器中已有登录信息过期情况
+                set(userId, {})
+                req.session = {}
+            }
+        })
     } else {
+        // 对应第一次访问该接口情况
         needSetCookie = true
         userId = `${Date.now()}_${Math.random()}`
-        SESSION_DATA[userId] = {}
+        set(userId, {})
+        req.session = {}
     }
 
-    req.session = SESSION_DATA[userId]
-
+    req.sessionId = userId
 
 
 

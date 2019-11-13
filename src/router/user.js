@@ -6,6 +6,9 @@ const {
 const {
     login
 } = require('../controller/user')
+const {
+    set
+} = require('../db/redis')
 
 function getCookieExpire() {
     const d = new Date();
@@ -27,17 +30,16 @@ const handleUserRouter = (req, res) => {
     } = query
 
     //用户登录
-    if (method === "GET" && path == '/api/user/login') {
-        // const {
-        //     username,
-        //     password
-        // } = req.body
+    if (method === "POST" && path == '/api/user/login') {
         const {
             username,
             password
-        } = query
+        } = req.body
+
+
 
         const loginRes = login(username, password)
+
         return loginRes.then(val => {
             if (val.username) {
 
@@ -45,33 +47,16 @@ const handleUserRouter = (req, res) => {
                 req.session.username = val.username;
                 req.session.realname = val.realname;
 
+
+                //同步到redis
+                set(req.sessionId, req.session)
+
                 return new SuccessModel()
             } else {
                 return new ErrorModel('账号密码错误')
             }
         })
     }
-
-    //登录验证
-    if (method === "GET" && path == '/api/user/login-test') {
-
-
-        if (req.session.username) {
-            return Promise.resolve(
-                new SuccessModel({
-                    session: req.session || 'session'
-                })
-            )
-        }
-
-        return Promise.resolve(
-            new ErrorModel('尚未登录')
-        )
-
-
-    }
-
-
 
 }
 

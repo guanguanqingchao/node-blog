@@ -12,8 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "cross-env": "^6.0.3",
+    "http-server": "^0.11.1",
     "lodash": "^4.17.15",
     "mysql": "^2.17.1",
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "redis": "^2.8.0"
   }
 }

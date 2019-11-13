@@ -1,4 +1,4 @@
-const redis = require('redis')
+const redis = require("redis");
 
 const {
     REDIS_CONF
@@ -9,7 +9,9 @@ const {
     port
 } = REDIS_CONF
 
-client = redis.createClient(host, port);
+
+// client = redis.createClient(host, port);
+client = redis.createClient();
 
 
 client.on("error", function (err) {
