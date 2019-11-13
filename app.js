@@ -10,6 +10,9 @@ const {
     get,
     set
 } = require('./src/db/redis')
+const {
+    access
+} = require('./src/utils/log')
 
 function getCookieExpire() {
     const d = new Date();
@@ -58,6 +61,9 @@ const getPostData = (req) => {
 
 
 const serverHandle = function (req, res) {
+
+    //日志
+    access(`${req.method} -- ${req.url} -- ${Date.now()} \n`)
 
     //设置数据格式
     res.setHeader('Content-type', 'application-json');
