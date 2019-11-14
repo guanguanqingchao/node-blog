@@ -2,6 +2,10 @@ const qs = require('querystring')
 const fs = require('fs');
 const path = require('path');
 
+const zlib = require('zlib');
+const gzip = zlib.createGzip();
+var int = fs.
+
 
 
 const handleBlogRouter = require('./src/router/blog')
